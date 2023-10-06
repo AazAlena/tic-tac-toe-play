@@ -1,0 +1,13 @@
+.field{
+    width: 100px;
+    height: 100px;
+    border: 1px solid black
+}
+
+.cont div{
+    padding: 0;
+}
+
+.row{
+    margin: 0;
+}
