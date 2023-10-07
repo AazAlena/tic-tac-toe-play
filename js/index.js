@@ -33,5 +33,5 @@ cont.addEventListener('click', function(evt){
         }
     }
 
-    }
+}
 );
