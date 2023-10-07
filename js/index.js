@@ -6,14 +6,12 @@ for (i=0; i<9; i++){
 let cont = document.querySelector(`.cont`);
 
 function print(coord, count){
-    if (count%2==1){
+    if (count%2 == 1){
         coord.innerHTML = "X";
-        
         matrix[coord.id-1] = 1;
         // console.log( "2", matrix);
-    } else if (count%2==0) {
+    } else {
         coord.innerHTML = "0";
-        
         matrix[coord.id-1] = 0;
     }
     // console.log( "3", matrix);
