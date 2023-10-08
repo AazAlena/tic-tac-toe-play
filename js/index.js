@@ -25,6 +25,7 @@ cont.addEventListener('click', function(evt){
         count=count+1;
         console.log(count, "1", matrix)
         print(coord, count);
+        console.log(coord[id2]);
         console.log( "4", matrix);
         if (count==9){
             alert(`ничья`);
