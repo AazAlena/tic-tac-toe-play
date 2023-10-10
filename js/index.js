@@ -11,11 +11,11 @@ let cont = document.querySelector(`.cont`);
         
 function print(coord, count){
     if (count%2 == 1){
-        coord.innerHTML = "X";
+        coord.innerHTML = `<img src="assets/cross.png" class="sing" alt="">`;
         matrix[coord.id-1] = 1;
         // console.log( "2", matrix);
     } else {
-        coord.innerHTML = "0";
+        coord.innerHTML = `<img src="assets/round.png" class="sing" alt="">`;
         matrix[coord.id-1] = 0;
     }
     // console.log( "3", matrix);
