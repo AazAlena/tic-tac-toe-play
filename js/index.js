@@ -1,8 +1,14 @@
 let count = 0;
 let matrix = []
-for (i=0; i<9; i++){
-    matrix.push(NaN)
+for (i=0; i<3; i++){
+    let list = [];
+    
+    for (j=0; j<3; j++){
+        list.push(NaN)
+    }
+    matrix.push(list);
 }
+console.log(matrix)
 let cont = document.querySelector(`.cont`);
 // let a = NaN;
 // let b = NaN;
@@ -66,5 +72,4 @@ let again = document.querySelector(`.again`);
 
 again.addEventListener('click', function(){
     location.reload()
-}
-)
+})
