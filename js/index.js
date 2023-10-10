@@ -56,15 +56,15 @@ cont.addEventListener('click', function(evt){
         else if (count == 9){
             setTimeout(function(){alert("Ничья");}, 100);
         } 
-        // console.log( "5", matrix);
-        // console.log("0", "===", matrix[0] === matrix[4] === matrix[8]=== 0);
-        // console.log("0", "==", matrix[0] == matrix[4] == matrix[8]== 0);
-        // console.log("1", "===", matrix[0] === matrix[4] === matrix[8]=== 1);
-        // console.log("1", "==", matrix[0] == matrix[4] == matrix[8]== 1);
-        
-        // console.log("1", "==", matrix[0] == matrix[4] == matrix[8]== 1);
         
     }
 
     }
 );
+
+let again = document.querySelector(`.again`);
+
+again.addEventListener('click', function(){
+    location.reload()
+}
+)

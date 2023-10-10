@@ -6,6 +6,7 @@
 
 .cont div{
     padding: 0;
+    
 }
 
 .row{
@@ -15,4 +16,11 @@
 .sing{
     width: 100px;
     height: 100px;
+}
+
+.cont{
+    margin-bottom: 10px;
+}
+.btn{
+    border: 1px solid grey;
 }
