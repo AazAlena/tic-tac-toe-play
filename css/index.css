@@ -4,13 +4,13 @@
     border: 1px solid black
 }
 
-.cont div{
-    padding: 0;
-    
+.cont{
+    margin-bottom: 10px;
+    width: 300px;
 }
 
-.row{
-    margin: 0;
+.cont div{
+    padding: 0;
 }
 
 .sing{
@@ -18,9 +18,6 @@
     height: 100px;
 }
 
-.cont{
-    margin-bottom: 10px;
-}
 .btn{
     border: 1px solid grey;
 }

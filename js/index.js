@@ -1,7 +1,5 @@
 let count = 0;
 let matrix = [];
-let cont = document.querySelector(`.cont`);
-let again = document.querySelector(`.again`);
 
 // создание матрицы
 for (i=0; i<3; i++){
@@ -50,9 +48,7 @@ function test_win(matrix){
         setTimeout(function(){alert("Ничья");}, 100);
     } 
 }
-
 // функция клика на поле
-
 function Click(event,x,y){
     console.log(x ,y)
     coord = event.target;
@@ -62,9 +58,7 @@ function Click(event,x,y){
         test_win(matrix)
     }
 }
-
 // при клике на кнопку again перезагрузка страницы
-
-again.addEventListener('click', function(){
+function again(){
     location.reload()
-})
+}
