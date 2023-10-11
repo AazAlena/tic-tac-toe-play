@@ -2,6 +2,7 @@ let count = 0;
 let matrix = [];
 let x1 = NaN;
 let y1 = NaN;
+
 // создание матрицы
 // for (i=0; i<3; i++){
 //     let list = [];
@@ -62,10 +63,7 @@ function test_win(matrix,x,y){
             (matrix[x][y][0][2] + matrix[x][y][1][1] + matrix[x][y][2][0] === 3))
         {
             setTimeout(function(){alert("Выиграли крестики")}, 100);
-        } 
-    else if (count == 9){
-        setTimeout(function(){alert("Ничья");}, 100);
-    } 
+        }
 }
 // функция клика на поле
 function Click(event,x,y,z,a){
@@ -88,9 +86,21 @@ function Click(event,x,y,z,a){
             test_win(matrix,x,y)
             x1 = z;
             y1 = a;
-    }
+        }
     }
 }
+// функция добавляет подсветку элементу, в котором нужно поставить знак
+function Colorful(x, y){
+    let xy = String(x)+String(y);
+    let objects2 = document.querySelectorAll(`.kv`)
+    console.log(objects2);
+    for (i=0; i<9; i++){
+        if (objects2[i].id == xy){
+            objects2[i].classList.add("this");
+        }
+    }
+}
+
 // при клике на кнопку again перезагрузка страницы
 function again(){
     location.reload()
