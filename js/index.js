@@ -1,6 +1,7 @@
 let count = 0;
 let matrix = [];
-
+let x1 = NaN;
+let y1 = NaN;
 // создание матрицы
 // for (i=0; i<3; i++){
 //     let list = [];
@@ -70,10 +71,24 @@ function test_win(matrix,x,y){
 function Click(event,x,y,z,a){
     console.log(x,y,z,a)
     coord = event.target;
-    if (isNaN(matrix[x][y][z][a])){
-        count = count + 1;
-        print(coord, count, x, y, z, a);
-        test_win(matrix,x,y)
+    if((!isNaN(x1)) & (!isNaN(y1))){
+        console.log(x1, y1)
+        if (isNaN(matrix[x][y][z][a]) & (x == x1) & (y == y1)){
+                count = count + 1;
+                print(coord, count, x, y, z, a);
+                test_win(matrix,x,y)
+                x1 = z;
+                y1 = a;
+        }
+    } else {
+        console.log(x1, y1)
+        if (isNaN(matrix[x][y][z][a]) ){
+            count = count + 1;
+            print(coord, count, x, y, z, a);
+            test_win(matrix,x,y)
+            x1 = z;
+            y1 = a;
+    }
     }
 }
 // при клике на кнопку again перезагрузка страницы
