@@ -1,18 +1,8 @@
-let count = 0;
+let MoveCount = 0;
 let matrix = [];
-let x1 = NaN;
-let y1 = NaN;
-
+let NextX = NaN;
+let NextY = NaN;
 // создание матрицы
-// for (i=0; i<3; i++){
-//     let list = [];
-    
-//     for (j=0; j<3; j++){
-//         list.push(NaN)
-//     }
-//     matrix.push(list);
-// }
-
 for (i=0; i<3; i++){
     let list1 = [];
     for (j=0; j<3; j++){
@@ -20,8 +10,7 @@ for (i=0; i<3; i++){
         for (t=0; t<3; t++){
             let list3 = [];
             for (q=0; q<3; q++){
-                let list4 = [NaN, NaN, NaN];
-                list3.push(list4);
+                list3.push([NaN, NaN, NaN]);
             }
             list2.push(list3);
         }
@@ -31,8 +20,8 @@ for (i=0; i<3; i++){
 }
 
 // функция печати к\н и добавления их в matrix 
-function print(coord, count, x, y, z, a){
-    if (count%2 == 1){
+function print(coord, MoveCount, x, y, z, a){
+    if (MoveCount%2 == 1){
         coord.innerHTML = `<img src="assets/cross.png" class="sing" alt="">`;
         matrix[x][y][z][a] = 1;
     } else {
@@ -66,39 +55,34 @@ function test_win(matrix,x,y){
         }
 }
 // функция клика на поле
-function Click(event,x,y,z,a){
-    console.log(x,y,z,a)
+function Click(event,big_x,big_y,small_x,small_y){
+    console.log(big_x,big_y,small_x,small_y)
     coord = event.target;
-    if((!isNaN(x1)) & (!isNaN(y1))){
-        console.log(x1, y1)
-        if (isNaN(matrix[x][y][z][a]) & (x == x1) & (y == y1)){
-                count = count + 1;
-                print(coord, count, x, y, z, a);
-                test_win(matrix,x,y)
-                x1 = z;
-                y1 = a;
-        }
-    } else {
-        console.log(x1, y1)
-        if (isNaN(matrix[x][y][z][a]) ){
-            count = count + 1;
-            print(coord, count, x, y, z, a);
-            test_win(matrix,x,y)
-            x1 = z;
-            y1 = a;
-        }
+    if (MoveCount!=0){
+        DeleteColorful(NextX, NextY);
     }
+    // проверка: если ставлю в правильное поле или это первый ход, то делать чтл, иначе игнорировать
+    if((isNaN(matrix[big_x][big_y][small_x][small_y]) && (big_x == NextX) && (big_y == NextY)) || MoveCount==0){
+        MoveCount ++;
+        print(coord, MoveCount, big_x, big_y, small_x, small_y);
+        test_win(matrix, big_x, big_y)
+        NextX = small_x;
+        NextY = small_y;
+    }
+    
+    Colorful(small_x, small_y);
 }
 // функция добавляет подсветку элементу, в котором нужно поставить знак
 function Colorful(x, y){
     let xy = String(x)+String(y);
-    let objects2 = document.querySelectorAll(`.kv`)
-    console.log(objects2);
-    for (i=0; i<9; i++){
-        if (objects2[i].id == xy){
-            objects2[i].classList.add("this");
-        }
-    }
+    object = document.getElementById(`${xy}`);
+    object.classList.add("this");
+}
+
+function DeleteColorful(past_x, past_y){
+    let xy = String(past_x)+String(past_y);
+    object = document.getElementById(`${xy}`);
+    object.classList.remove("this");
 }
 
 // при клике на кнопку again перезагрузка страницы
