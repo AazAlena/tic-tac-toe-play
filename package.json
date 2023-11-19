@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/AazAlena/tic-tac-toe-play#readme",
   "dependencies": {
+    "axios": "^1.6.2",
     "express": "^4.18.2",
+    "hbs": "^4.2.0",
     "nodemon": "^3.0.1"
   }
 }

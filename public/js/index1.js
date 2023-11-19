@@ -1,7 +1,37 @@
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+// getInfo();
+async function sendInfo() {
+    await axios.get(`/data/get`, {
+        params:{
+            coord: String(Big_x)+String(Big_y)+String(Small_x)+String(Small_y),
+            what: MoveCount%2
+        }
+    });
+    console.log(`отправлено на back js(в файл):`, String(Big_x)+String(Big_y)+String(Small_x)+String(Small_y), ` `, MoveCount%2);
+}
+
+async function getInfo() {
+    let response = await axios(`/data/send`);
+    // console.log(response);
+    let moves = response.data;
+    console.log("пришел на front js:", moves);
+    // printMoves(moves);
+};
+
+// function printMoves(moves){
+    
+// }
+
 let MoveCount = 0;
 let matrix = [];
 let NextX = NaN;
 let NextY = NaN;
+
+let Big_x = NaN;
+let Big_y = NaN;
+let Small_x = NaN;
+let Small_y = NaN;
+
 // создание матрицы
 for (i=0; i<3; i++){
     let list1 = [];
@@ -56,7 +86,12 @@ function test_win(matrix,x,y){
 }
 // функция клика на поле
 function Click(event,big_x,big_y,small_x,small_y){
-    console.log(big_x,big_y,small_x,small_y)
+    Big_x = big_x;
+    Big_y = big_y;
+    Small_x = small_x;
+    Small_y = small_y;
+
+    // console.log(big_x,big_y,small_x,small_y)
     coord = event.target;
     if (MoveCount!=0){
         DeleteColorful(NextX, NextY);
@@ -69,6 +104,8 @@ function Click(event,big_x,big_y,small_x,small_y){
         NextX = small_x;
         NextY = small_y;
     }
+    sendInfo();
+    getInfo();
     
     Colorful(small_x, small_y);
 }
@@ -86,6 +123,7 @@ function DeleteColorful(past_x, past_y){
 }
 
 // при клике на кнопку again перезагрузка страницы
-function again(){
-    location.reload()
+async function again(){
+    location.reload();
+    await axios.get(`/reload`);
 }
