@@ -1,46 +1,40 @@
 let express = require(`express`);
 let app = express();
 
-let host = "localhost"
+let host = `0.0.0.0`;
 let port = 3001;
-let f_data = "moves.data";
+let fileData = `moves.data`;
+let lastMove;
 
-
-// const hbs = require('hbs');
-// app.set('views', 'views');
-// app.set('view engine', 'hbs');
-
-app.use(express.static('public'));
+app.use(express.static(`public`));
 app.use(express.json());
 
-const fs = require("fs");
+const fs = require(`fs`);
 
-app.listen(port, function(){
+app.listen(port, host, function(){
     console.log(`http://${host}:${port}`)
 })
 
-
-
 app.get(`/data/send`, async function(req, res){
-    console.log("app.get(`/`) запущен");
-    
+    console.log(`app.get(/data/send) запущен`);
+    res.send(lastMove);
     // fs.appendFileSync("moves.txt", `123\n`)
-    fs.readFile(f_data, "utf8", async function(error, data){ 
-        console.log(data); 
-        res.send(data);
-    });
+    // fs.readFile(fileData, `utf8`, async function(error, data){ 
+    //     console.log(data); 
+    //     res.send(data);
+    // });
 })
 
-
 app.get(`/data/get`, async function(req, res){
-    console.log("app.get(`/get/moves`) запущен");
-    let coord = req.query.coord;
-    let what = req.query.what;
+    console.log(`app.get(/data/get) запущен`);
+    let globalFieldCoord = req.query.globalFieldCoord;
+    let moveCount = req.query.moveCount;
     
-    fs.appendFileSync(f_data, `${coord} ${what}\n`);
+    lastMove = String(globalFieldCoord) + " " + String(moveCount);
+    fs.appendFileSync(fileData, `${globalFieldCoord} ${moveCount}\n`);
 })
 
 app.get(`/reload`, async function(req, res){
-    console.log("начать заново");
-    fs.writeFileSync(f_data, ` `);
+    console.log(`начать заново`);
+    fs.writeFileSync(fileData, ``);
 })
