@@ -4,11 +4,11 @@ getInfo()
 let timerId = setInterval(() => getInfo(), 1000);
 // setTimeout(() => {clearInterval(getInfo());}, 2000);
 
-async function sendInfo() {
+async function sendInfo(nextX, nextY) {
     await axios.get(`/data/get`, {
         params:{
             globalFieldCoord: String(globalFieldX) + String(globalFieldY) + String(smallFieldX) + String(smallFieldY),
-            moveCount: moveCount
+            nextXY: String(nextX) + String(nextY)
         }
     });
     console.log(`отправлено на back js(в файл):`, String(globalFieldX) + String(globalFieldY) + String(smallFieldX) + String(smallFieldY), ` `, moveCount);
@@ -19,16 +19,40 @@ async function getInfo() {
     let lastMove = response.data;
     console.log(`пришел на front js:`, lastMove);
     // отрисовать картинку
-    moveCount = lastMove[5];
+    if (lastMove == 0){
+        moveCount = 0;
+    } else {
+        moveCount = (lastMove[5]);
+        
+        bigX = lastMove[0];
+        bigY = lastMove[1];
+        smallX = lastMove[2];
+        smallY =  lastMove[3];
+        globalFieldX = bigX;
+        globalFieldY = bigY;
+        smallFieldX = smallX;
+        smallFieldY = smallY;
+        
+    
+        globalCoord = String(globalFieldX)+String(globalFieldY)+String(smallFieldX)+String(smallFieldY);
+    
+        if (moveCount != 1){
+            DeleteColorful(nextX, nextY);
+        }
+        // проверка: если ставлю в правильное поле или это первый ход, то делать чтл, иначе игнорировать
+        
+        printPicture(globalCoord, moveCount, bigX, bigY, smallX, smallY);
+        testWin(matrix, bigX, bigY)
+        nextX = smallX;
+        nextY = smallY;
+        
+        
+        Colorful(smallX, smallY);
 
-    if (moveCount != 0){
-        DeleteColorful(nextX, nextY);
     }
-    printPicture(String(lastMove[0]) + String(lastMove[1]) + String(lastMove[2]) + String(lastMove[3]), lastMove[5], lastMove[0], lastMove[1], lastMove[2], lastMove[3]);
-    Colorful(lastMove[2], lastMove[3]);
 };
 
-let moveCount = 0;
+// let moveCount = 0;
 let matrix = [];
 let nextX = NaN;
 let nextY = NaN;
@@ -98,6 +122,7 @@ function testWin(matrix, x, y){
 }
 // функция клика на поле
 function Click(event, bigX, bigY, smallX, smallY){
+    
     globalFieldX = bigX;
     globalFieldY = bigY;
     smallFieldX = smallX;
@@ -115,8 +140,10 @@ function Click(event, bigX, bigY, smallX, smallY){
         testWin(matrix, bigX, bigY)
         nextX = smallX;
         nextY = smallY;
+
+        sendInfo(nextX, nextY);
     }
-    sendInfo();
+    
     Colorful(smallX, smallY);
 }
 
