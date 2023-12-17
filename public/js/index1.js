@@ -4,11 +4,10 @@ getInfo()
 let timerId = setInterval(() => getInfo(), 1000);
 // setTimeout(() => {clearInterval(getInfo());}, 2000);
 
-async function sendInfo(nextX, nextY) {
+async function sendInfo() {
     await axios.get(`/data/get`, {
         params:{
             globalFieldCoord: String(globalFieldX) + String(globalFieldY) + String(smallFieldX) + String(smallFieldY),
-            nextXY: String(nextX) + String(nextY)
         }
     });
     console.log(`отправлено на back js(в файл):`, String(globalFieldX) + String(globalFieldY) + String(smallFieldX) + String(smallFieldY), ` `, moveCount);
@@ -32,31 +31,26 @@ async function getInfo() {
         globalFieldY = bigY;
         smallFieldX = smallX;
         smallFieldY = smallY;
-        
-    
+        nextX = smallFieldX;
+        nextY = smallFieldY;
+
         globalCoord = String(globalFieldX)+String(globalFieldY)+String(smallFieldX)+String(smallFieldY);
     
         if (moveCount != 1){
-            DeleteColorful(nextX, nextY);
+            DeleteColorful(globalFieldX, globalFieldY);
         }
-        // проверка: если ставлю в правильное поле или это первый ход, то делать чтл, иначе игнорировать
         
-        printPicture(globalCoord, moveCount, bigX, bigY, smallX, smallY);
-        testWin(matrix, bigX, bigY)
-        nextX = smallX;
-        nextY = smallY;
-        
-        
-        Colorful(smallX, smallY);
-
+        printPicture(globalCoord, moveCount, globalFieldX, globalFieldY, smallFieldX, smallFieldY);
+        testWin(matrix, globalFieldX, globalFieldY)
+        Colorful(smallFieldX, smallFieldY);
     }
 };
 
 // let moveCount = 0;
 let matrix = [];
+
 let nextX = NaN;
 let nextY = NaN;
-
 let globalFieldX = NaN;
 let globalFieldY = NaN;
 let smallFieldX = NaN;
@@ -107,6 +101,7 @@ function testWin(matrix, x, y){
         (matrix[x][y][0][0] + matrix[x][y][1][1] + matrix[x][y][2][2] === 0) || 
         (matrix[x][y][0][2] + matrix[x][y][1][1] + matrix[x][y][2][0] === 0) ){
             setTimeout(function(){alert(`Выиграли нолики`)}, 100);
+            setTimeout(function(){again();}, 500);
         } 
     else if(
         (matrix[x][y][0][0] + matrix[x][y][0][1] + matrix[x][y][0][2] === 3) ||  
@@ -118,6 +113,7 @@ function testWin(matrix, x, y){
         (matrix[x][y][0][0] + matrix[x][y][1][1] + matrix[x][y][2][2] === 3) || 
         (matrix[x][y][0][2] + matrix[x][y][1][1] + matrix[x][y][2][0] === 3)){
             setTimeout(function(){alert(`Выиграли крестики`)}, 100);
+            setTimeout(function(){again();}, 500);
         } 
 }
 // функция клика на поле
@@ -131,20 +127,19 @@ function Click(event, bigX, bigY, smallX, smallY){
     globalCoord = String(globalFieldX)+String(globalFieldY)+String(smallFieldX)+String(smallFieldY);
 
     if (moveCount != 0){
-        DeleteColorful(nextX, nextY);
+        DeleteColorful(globalFieldX, globalFieldY);
     }
     // проверка: если ставлю в правильное поле или это первый ход, то делать чтл, иначе игнорировать
     if((isNaN(matrix[bigX][bigY][smallX][smallY]) && (bigX == nextX) && (bigY == nextY)) || moveCount == 0){
         moveCount ++;
         printPicture(globalCoord, moveCount, bigX, bigY, smallX, smallY);
         testWin(matrix, bigX, bigY)
-        nextX = smallX;
-        nextY = smallY;
-
-        sendInfo(nextX, nextY);
+        
+        sendInfo();
+        Colorful(smallFieldX, smallFieldY);
     }
     
-    Colorful(smallX, smallY);
+    
 }
 
 // функция добавляет подсветку элементу, в котором нужно поставить знак
@@ -163,5 +158,5 @@ function DeleteColorful(pastX, pastY){
 // при клике на кнопку again перезагрузка страницы
 async function again(){
     location.reload();
-    await axios.get(`/reload`);
+    await axios.get(`/reload`); 
 }

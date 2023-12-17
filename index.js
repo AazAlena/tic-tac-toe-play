@@ -7,7 +7,6 @@ let fileData = `moves.data`;
 let lastMove;
 let moveCount = 0;
 
-
 app.use(express.static(`public`));
 app.use(express.json());
 
@@ -24,26 +23,21 @@ app.get(`/data/send`, async function(req, res){
     } else {
         res.send(lastMove);
     }
-    // fs.appendFileSync("moves.txt", `123\n`)
-    // fs.readFile(fileData, `utf8`, async function(error, data){ 
-    //     console.log(data); 
-    //     res.send(data);
-    // });
+    
 })
 
 app.get(`/data/get`, async function(req, res){
     console.log(`app.get(/data/get) запущен`);
     let globalFieldCoord = req.query.globalFieldCoord;
-    let globalNextCoord = req.query.nextXY;
     moveCount += 1;
     
-    lastMove = String(globalFieldCoord) + " " + String(moveCount)+" "+String(globalNextCoord);
-    fs.appendFileSync(fileData, `${globalFieldCoord} ${moveCount} ${globalNextCoord}\n`);
+    lastMove = String(globalFieldCoord) + " " + String(moveCount);
+    fs.appendFileSync(fileData, `${globalFieldCoord} ${moveCount}\n`);
 })
 
 app.get(`/reload`, async function(req, res){
     console.log(`начать заново`);
-    let lastMove;
-    let moveCount = 0;
+    lastMove = null;
+    moveCount = 0;
     fs.writeFileSync(fileData, ``);
 })
